@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="card shadow-sm p-3">
+    <div class="card-body">
+      <%= form_with model: @article, local: true do |form| %>
+        <% if @article.errors.any? %>
+          <div id="error_explanation">
+            <h2>
+              <%= pluralize(@article.errors.count, "error") %> prohibited
+              this article from being saved:
+            </h2>
+            <ul>
+              <% @article.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+       
+        <div class="form-group">
+          <%= form.label :name, for: "name" %><br>
+          <%= form.text_field :name, class: "form-control" %>
+        </div>
+       
+        <div class="form-group">
+          <%= form.label :description, for: "description" %><br>
+          <%= form.text_area :description, class: "form-control" %>
+        </div>
+       
+        <div class="form-group">
+          <%= form.submit "Submit", class: 'btn btn-primary ml-1' %>
+          &nbsp; <%= link_to 'Back', articles_path, class: "btn btn-info" %>
+        </div>
+      <% end %>
+    </div>  
+  </div>
+</div>
+    

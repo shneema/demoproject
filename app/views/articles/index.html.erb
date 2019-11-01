@@ -1,0 +1,59 @@
+
+<a href='javascript:void(0)' id='all-articles' onclick="callExecuter()" class='btn btn-default'>show all articles</a>   
+<div id="somedemo"></div>
+
+ <h1 class="head1">Listing Articles</h1>
+    <p class="btn">
+      <%= link_to 'New article', new_article_path, class: "btn btn-primary" %>
+    </p>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <tr>
+          <th>Author Name</th>
+          <th>Description</th>
+          <th colspan="3"></th>
+        </tr>
+ 
+        <% @articles.each do |article| %>
+          <tr>
+            <td><%= article.name %></td>
+            <td><%= article.description %></td>
+
+            <td>
+              <%= link_to 'Show', article_path(article), class: "btn btn-success"%>
+            </td>
+            <td>
+              <%= link_to 'Edit', edit_article_path(article), class: "btn btn-default"%>
+            </td>
+            <td>
+              <%= link_to 'Destroy', article_path(article), class: "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+       <% end %>
+      </table>
+    </div>
+
+
+
+<script>
+var callExecuter=function(){
+  // debugger
+  $.ajax({
+    type:'GET',
+    dataType: 'json',
+    url:'<%= articles_path %>',
+    success:function(response){
+      //I assume you want to do something on controller action execution success?
+      // response.forEach(function(article){$('#somedemo').append(article.name," ", article.description);
+      response.forEach(function(article){ $article_html = $("<div class='article'>" + article.name + "</div>"); $('#somedemo').append($article_html); });
+    }
+  });
+}
+
+// $(document).on("click","#all-articles",callExecuter);
+</script>
+
+<!-- 
+data.users.forEach(function(user){ $user_html = $("<div class='user'>" + user.name + "</div>"); $('#usersList').append($user_html); });
+
+response.forEach(function(user){ $article_html = $("<div class='article'>" + article.name + "</div>"); $('#somedemo').append($article_html); }); -->

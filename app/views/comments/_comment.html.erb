@@ -1,0 +1,35 @@
+<p>
+    <strong>Commenter:</strong>
+    <%= comment.user.email %>
+</p>
+ 
+<p>
+    <strong>Comment:</strong>
+    <%= comment.comment %>
+</p>
+
+<p>
+  <%= link_to 'Like Comment', comment_likes_path(comment, likeable_type: comment.class, likeable_id: comment.id), class: "btn btn-info", method: :post, remote: true, id: "like-btn" %>
+</p>
+
+<p>                                 
+  <% comment.likes.each do |like| %>
+	  <% if like.user_id == current_user.id %>
+	    <%= link_to 'unlike', like_path(like), class: "btn btn-primary", method: :delete, remote: true, id: 'ulike-btn'%>
+	  <% end %>
+	<% end %>
+</p>
+
+<p>
+	<% if (comment.likes.count) == 1 %>
+		<p><%= comment.likes.count %> Like</p>
+	<% elsif (comment.likes.count) > 1 %>
+    <p><%= comment.likes.count %> Likes</p>
+	<% else %>
+		<%= 'not liked yet by any one' %>		 
+	<% end %>	
+</p>
+
+<p>
+  <%= link_to 'Destroy Comment', comment_path(comment), class: "btn btn-danger",method: :delete, data: { confirm: 'Are you sure?' } %>
+</p>

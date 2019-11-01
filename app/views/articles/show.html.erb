@@ -1,0 +1,86 @@
+<a href='javascript:void(0)' id='all-articles' onclick="callExecuter()" class='btn btn-default'>show all articles</a> 	
+<div id="somedemo"></div>
+<div class="container">
+	<div class="card shadow-sm p-3">
+		<div class="card-body">
+			  <p>
+				  <strong>Name:</strong>
+				  <%= @article.name %>
+				</p>
+				 
+				<p>
+				  <strong>Description:</strong>
+				  <%= @article.description %>
+				</p>
+	
+				<p>
+					<%= link_to 'Like Article', article_likes_path(@article, likeable_type: @article.class, likeable_id: @article.id), class: "btn btn-primary", method: :post, remote: true, id: 'like-btn'%>
+				</p>	
+        
+        <p>                                 
+	        <% @article.likes.each do |like| %>
+					  <% if like.user_id == current_user.id %>
+					    <%= link_to 'Unlike', like_path(like), class: "btn btn-primary", method: :delete, remote: true, id: 'unlike-btn'%>
+					  <% end %>
+					<% end %>
+			  </p>
+				                                        
+        <p>
+					<% if (@article.likes.count) == 1 %>
+						<p><%= @article.likes.count %> Like</p>
+					<% elsif (@article.likes.count) > 1 %>
+				    <p><%= @article.likes.count %> Likes</p>
+					<% else %>
+						<%= 'not liked yet by any one' %>		 
+					<% end %>	
+        </p>
+
+				<h2>Comments</h2>
+				<%= render @article.comments %>
+
+				<h4>Add a comment:</h4>
+				<% if current_user %>
+					<%= render 'comments/form' %>
+				<% else %>
+				<p> You must sign in to comment. </p>
+				<% end %>				
+		</div>
+	</div>
+</div>
+
+<!-- <a id="all-articles" href="">show all articles</a>
+
+
+<script>
+	$(document).ready(function() {
+	 	$('#all-articles').on('click', function(){
+	 		console.log("r5r5t");
+	 		debugger
+	 		$.get("/articles", function(data) {
+		  	$('#demo').html(data);
+			});
+	 	});
+	});
+</script> -->
+
+
+
+
+<script>
+var callExecuter=function(){
+  // debugger
+  $.ajax({
+    type:'GET',
+    dataType: 'json',
+    url:'<%= articles_path %>',
+    success:function(response){
+      //I assume you want to do something on controller action execution success?
+      response.forEach(function(article){
+        $('#somedemo').append(article.name);
+    	});
+    }
+  });
+}
+
+// $(document).on("click","#all-articles",callExecuter);
+</script>
